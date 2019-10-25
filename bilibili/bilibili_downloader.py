@@ -38,11 +38,13 @@ class bilibili():
         pattern = r'\<script\>window\.__playinfo__=(.*?)\</script\>'
         result = re.findall(pattern, html)[0]
         temp = json.loads(result)
-        #temp['durl']是一个列表，里面有很多字典
-        #video_url = temp['durl']
-        for item in temp['durl']:
-            if 'url' in item.keys():
-                video_url = item['url']
+        #temp["data"]["dash"]["video"]是一个列表，里面有很多字典
+        #video_url_list = temp["data"]["dash"]["video"]
+        video_url_list = temp["data"]["dash"]["video"]
+        for candidate in video_url_list:
+            if "baseUrl" in candidate.keys():
+                video_url = candidate["baseUrl"]
+                break
         #print(video_url)
         return{
             'title': video_title,
